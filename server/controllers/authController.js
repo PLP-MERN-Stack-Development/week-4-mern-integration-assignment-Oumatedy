@@ -18,13 +18,13 @@ exports.signup = async (req, res) => {
         const hashed = await bcrypt.hash(password, 10);
 
         // Create a new user
-        const User = await User.create({
+        const user = await User.create({
             email,
             password: hashed
         });
 
         // Generate a JWT token
-        const token = jwt.sign({ id: User._id, role: User.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
         // Send response
         res.status(201).json({ token });
