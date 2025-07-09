@@ -1,79 +1,171 @@
-[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-2e0aaae1b6195c2367325f4f02e2d04e9abb55f0b24a779b69b11b9e10269abc.svg)](https://classroom.github.com/online_ide?assignment_repo_id=19859501&assignment_repo_type=AssignmentRepo)
-# MERN Stack Integration Assignment
+# Dev Task Manager
 
-This assignment focuses on building a full-stack MERN (MongoDB, Express.js, React.js, Node.js) application that demonstrates seamless integration between front-end and back-end components.
+A full-stack MERN (MongoDB, Express, React, Node.js) task management application with authentication, protected routes, and full CRUD for tasks.
 
-## Assignment Overview
+---
 
-You will build a blog application with the following features:
-1. RESTful API with Express.js and MongoDB
-2. React front-end with component architecture
-3. Full CRUD functionality for blog posts
-4. User authentication and authorization
-5. Advanced features like image uploads and comments
+## Table of Contents
+- [Project Overview](#project-overview)
+- [Features](#features)
+- [Screenshots](#screenshots)
+- [Setup Instructions](#setup-instructions)
+- [API Documentation](#api-documentation)
+- [Environment Variables](#environment-variables)
+- [Folder Structure](#folder-structure)
+- [How to Use](#how-to-use)
+- [Troubleshooting](#troubleshooting)
+- [License](#license)
 
-## Project Structure
+---
 
+## Project Overview
+Dev Task Manager is a productivity web app that allows users to securely manage their personal tasks. It demonstrates a complete MERN stack integration with modern best practices, including JWT authentication, protected API routes, and a responsive React UI.
+
+---
+
+## Features
+- User registration and login (JWT authentication)
+- Protected routes (frontend and backend)
+- Add, edit, complete, and delete tasks (CRUD)
+- Dashboard with task list and status
+- Responsive design with dark/light mode toggle
+- User profile menu with logout
+- Toast notifications for actions
+- Clean, modern UI
+
+---
+
+## Screenshots
+> _Add screenshots to a `/screenshots` folder and reference them here._
+
+- ![Login Page](screenshots/login.png)
+- ![Dashboard](screenshots/dashboard.png)
+- ![Add Task Dialog](screenshots/add-task.png)
+- ![Dark Mode](screenshots/dark-mode.png)
+
+---
+
+## Setup Instructions
+
+### Prerequisites
+- Node.js (v18+ recommended)
+- MongoDB (local or Atlas)
+- pnpm (or npm/yarn)
+
+### 1. Clone the repository
+```sh
+git clone <your-repo-url>
+cd <your-repo-folder>
 ```
-mern-blog/
-├── client/                 # React front-end
-│   ├── public/             # Static files
-│   ├── src/                # React source code
-│   │   ├── components/     # Reusable components
-│   │   ├── pages/          # Page components
-│   │   ├── hooks/          # Custom React hooks
-│   │   ├── services/       # API services
-│   │   ├── context/        # React context providers
-│   │   └── App.jsx         # Main application component
-│   └── package.json        # Client dependencies
-├── server/                 # Express.js back-end
-│   ├── config/             # Configuration files
-│   ├── controllers/        # Route controllers
-│   ├── models/             # Mongoose models
-│   ├── routes/             # API routes
-│   ├── middleware/         # Custom middleware
-│   ├── utils/              # Utility functions
-│   ├── server.js           # Main server file
-│   └── package.json        # Server dependencies
-└── README.md               # Project documentation
+
+### 2. Setup the Server
+```sh
+cd server
+cp .env.example .env # Fill in your MongoDB URI and JWT secret
+pnpm install # or npm install
+pnpm start   # or npm start
 ```
 
-## Getting Started
+### 3. Setup the Client
+```sh
+cd ../client
+cp .env.example .env # (if needed, for Vite config)
+pnpm install # or npm install
+pnpm dev     # or npm start
+```
 
-1. Accept the GitHub Classroom assignment invitation
-2. Clone your personal repository that was created by GitHub Classroom
-3. Follow the setup instructions in the `Week4-Assignment.md` file
-4. Complete the tasks outlined in the assignment
+### 4. Open the App
+- Client: http://localhost:5173
+- Server: http://localhost:5000
 
-## Files Included
+---
 
-- `Week4-Assignment.md`: Detailed assignment instructions
-- Starter code for both client and server:
-  - Basic project structure
-  - Configuration files
-  - Sample models and components
+## API Documentation
 
-## Requirements
+### Auth Endpoints
+- `POST /api/auth/signup` — Register a new user
+  - Body: `{ "email": "user@example.com", "password": "yourpassword" }`
+- `POST /api/auth/login` — Log in
+  - Body: `{ "email": "user@example.com", "password": "yourpassword" }`
+  - Returns: `{ "token": "<jwt>" }`
 
-- Node.js (v18 or higher)
-- MongoDB (local installation or Atlas account)
-- npm or yarn
-- Git
+### Task Endpoints _(require Authorization header: `Bearer <token>`)_
+- `GET /api/tasks` — Get all tasks for the logged-in user
+- `POST /api/tasks` — Create a new task
+  - Body: `{ "title": "Task title", "description": "Task details" }`
+- `PUT /api/tasks/:id` — Update a task (e.g., mark complete)
+  - Body: `{ "title?": "...", "description?": "...", "completed?": true }`
+- `DELETE /api/tasks/:id` — Delete a task
 
-## Submission
+#### Example: Authenticated Request
+```
+GET /api/tasks
+Authorization: Bearer <your_token_here>
+```
 
-Your work will be automatically submitted when you push to your GitHub Classroom repository. Make sure to:
+---
 
-1. Complete both the client and server portions of the application
-2. Implement all required API endpoints
-3. Create the necessary React components and hooks
-4. Document your API and setup process in the README.md
-5. Include screenshots of your working application
+## Environment Variables
 
-## Resources
+### server/.env.example
+```
+MONGO_URI=your_mongodb_uri
+JWT_SECRET=your_jwt_secret
+PORT=5000
+```
 
-- [MongoDB Documentation](https://docs.mongodb.com/)
-- [Express.js Documentation](https://expressjs.com/)
-- [React Documentation](https://react.dev/)
-- [Node.js Documentation](https://nodejs.org/en/docs/)
-- [Mongoose Documentation](https://mongoosejs.com/docs/) 
+### client/.env.example
+```
+# (Usually not needed unless you use Vite env vars)
+VITE_API_URL=http://localhost:5000/api
+```
+
+---
+
+## Folder Structure
+```
+week-4-mern-integration-assignment-Oumatedy/
+├── client/
+│   ├── public/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── services/
+│   │   └── ...
+│   └── package.json
+├── server/
+│   ├── config/
+│   ├── controllers/
+│   ├── models/
+│   ├── routes/
+│   ├── middleware/
+│   ├── server.js
+│   └── package.json
+└── README.md
+```
+
+---
+
+## How to Use
+1. Register a new account or log in.
+2. Add, edit, complete, or delete your tasks from the dashboard.
+3. Use the theme toggle for dark/light mode.
+4. Log out from the profile menu.
+
+---
+
+## Troubleshooting
+- **Port in use:** Change the `PORT` in `.env` if 5000 is busy.
+- **MongoDB connection error:** Check your `MONGO_URI` in `.env`.
+- **JWT errors:** Ensure `JWT_SECRET` is set and matches in your `.env`.
+- **CORS issues:** Make sure both client and server are running on allowed origins.
+- **API 404/401:** Ensure you are sending the correct `Authorization` header and the backend is running.
+
+---
+
+## License
+This project is for educational purposes.
+
+---
+
+**Happy coding!**
